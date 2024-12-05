@@ -1,0 +1,73 @@
+<Page x:Class="HotelManagement.Views.DashboardPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Dashboard">
+    <Grid Background="White">
+        <!-- Main Container -->
+        <StackPanel Margin="20">
+            <!-- Page Title -->
+            <TextBlock Text="Dashboard" FontSize="32" FontWeight="Bold" Margin="0,0,0,20" />
+
+            <!-- Metrics Section -->
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Rooms Card -->
+                <Border Background="#3498DB" CornerRadius="10" Margin="10" Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="Total Rooms" FontSize="16" Foreground="White" />
+                        <TextBlock Text="150" FontSize="32" FontWeight="Bold" Foreground="White" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Bookings Card -->
+                <Border Background="#27AE60" CornerRadius="10" Margin="10" Padding="20" Grid.Column="1">
+                    <StackPanel>
+                        <TextBlock Text="Bookings Today" FontSize="16" Foreground="White" />
+                        <TextBlock Text="45" FontSize="32" FontWeight="Bold" Foreground="White" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Clients Card -->
+                <Border Background="#E74C3C" CornerRadius="10" Margin="10" Padding="20" Grid.Column="2">
+                    <StackPanel>
+                        <TextBlock Text="Registered Clients" FontSize="16" Foreground="White" />
+                        <TextBlock Text="300" FontSize="32" FontWeight="Bold" Foreground="White" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Navigation Section -->
+            <TextBlock Text="Quick Links" FontSize="24" FontWeight="SemiBold" Margin="0,20,0,10" />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Rooms Button -->
+                <Button Content="Manage Rooms" Background="#3498DB" Foreground="White" FontSize="16"
+                        Margin="10" Height="100" VerticalAlignment="Stretch"
+                        HorizontalAlignment="Stretch" Grid.Column="0"
+                        Click="NavigateToRooms"/>
+
+                <!-- Clients Button -->
+                <Button Content="Manage Clients" Background="#27AE60" Foreground="White" FontSize="16"
+                        Margin="10" Height="100" VerticalAlignment="Stretch"
+                        HorizontalAlignment="Stretch" Grid.Column="1"
+                        Click="NavigateToClients"/>
+
+                <!-- Reports Button -->
+                <Button Content="View Reports" Background="#E74C3C" Foreground="White" FontSize="16"
+                        Margin="10" Height="100" VerticalAlignment="Stretch"
+                        HorizontalAlignment="Stretch" Grid.Column="2"/>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Page>

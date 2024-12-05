@@ -1,24 +1,34 @@
-﻿using System.Text;
+﻿using System.Windows.Controls;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace Hotel_Management
+namespace HotelManagement.Views
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+            MainFrame.Navigate(new DashboardPage());  // Default page load
+        }
+
+        private void NavigateToPage(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            if (button != null)
+            {
+                switch (button.Tag.ToString())
+                {
+                    case "DashboardPage":
+                        MainFrame.Navigate(new DashboardPage());
+                        break;
+                    case "RoomsPage":
+                        MainFrame.Navigate(new RoomsPage());
+                        break;
+                    case "ClientsPage":
+                        MainFrame.Navigate(new ClientsPage());
+                        break;
+                }
+            }
         }
     }
 }
