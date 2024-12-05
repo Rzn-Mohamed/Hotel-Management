@@ -8,5 +8,6 @@ namespace Hotel_Management.Services
 {
     internal class EmailTest
     {
+        public EmailTest() { }
     }
-}
+}   
