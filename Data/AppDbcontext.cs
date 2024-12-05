@@ -8,6 +8,7 @@ public class AppDbContext : DbContext
     public DbSet<Employee> Employees { get; set; } = null!;
     public DbSet<Client> Clients { get; set; } = null!;
 
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlServer("Server=localhost\\SQLExpress;Database=HotelDB;Trusted_Connection=True;TrustServerCertificate=True;");
