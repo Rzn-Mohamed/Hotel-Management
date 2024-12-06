@@ -6,14 +6,29 @@
         <StackPanel Margin="20">
             <TextBlock Text="Clients Management" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
 
-            <!-- Add Client Section -->
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                <Button Content="Add Client" Width="100" Height="30" Background="#27AE60" Foreground="White" Margin="0,0,10,0" />
-                <Button Content="Delete Client" Width="100" Height="30" Background="#E74C3C" Foreground="White"/>
-            </StackPanel>
+          
 
-            <!-- Clients List -->
-            <DataGrid x:Name="ClientsDataGrid" AutoGenerateColumns="True" Height="300" Width="500" Margin="0,20,0,0" />
+            <DataGrid x:Name="ClientsDataGrid" AutoGenerateColumns="False" Height="auto" Width="auto" Margin="0,20,0,0" IsReadOnly="True">
+                <!-- Define Columns -->
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Client ID" Binding="{Binding Id}" Width="100"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="200"/>
+                    <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200"/>
+
+                    <!-- Delete Button Column -->
+                    <DataGridTemplateColumn Header="Actions" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Delete" Background="#E74C3C" Foreground="White" Width="80" 
+                                        CommandParameter="{Binding Id}" Click="DeleteClientButton_Click"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Button Content="Add Client" Width="100" Height="30" Background="#27AE60" Foreground="White" Margin="5,15,0,0" Click="MenuItemClick" />
+
         </StackPanel>
     </Grid>
 </Page>

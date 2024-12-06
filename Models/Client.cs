@@ -2,6 +2,7 @@
 {
     public class Client : User
     {
+ 
         public bool isClient {  get; set; } = true;
     }
 }

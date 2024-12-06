@@ -18,8 +18,15 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<User>().ToTable("Users");
+        modelBuilder.Entity<Client>().ToTable("Clients");
         modelBuilder.Entity<Manager>().ToTable("Managers");
         modelBuilder.Entity<Employee>().ToTable("Employees");
-        modelBuilder.Entity<Client>().ToTable("Clients");
+
+
     }
+
+
+
+
+
 }
