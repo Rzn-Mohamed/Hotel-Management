@@ -28,43 +28,29 @@ namespace HotelManagement.Views
 
         private void AddNewClientButton_Click(object sender, RoutedEventArgs e)
         {
-            
-            using (var dbContext = new AppDbContext())
-            {
-                var client = new Client
-                {
-                    Name = "Jane Doe", 
-                    Email = "janedoe@example.com",
-                    isClient = true ,
-                    Password=""
-                };
 
-                dbContext.Clients.Add(client);
-                dbContext.SaveChanges();
-            }
-
-            // Refresh the clients list after adding a new client
-            LoadClients();
+            NavigationService.Navigate(new AddClientPage());
         }
 
 
         private void DeleteClientButton_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
-            if(button?.CommandParameter is int clientId)
+            var messageBox = new CustomMessageBox("Client Deleted successfully!");
+            if (button?.CommandParameter is int clientId)
             {
                 _clientService.DeleteClient(clientId);
+                messageBox.ShowDialog();
             }
 
             LoadClients();
         }
 
 
-        private void MenuItemClick(object sender, RoutedEventArgs e)
-        {
+    
 
-            MessageBox.Show(((Button)sender).Content.ToString() + " Add client!");
-        }
+   
+     
 
     }
 }

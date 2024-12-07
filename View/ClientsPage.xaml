@@ -4,31 +4,31 @@
       Title="Clients">
     <Grid Background="White">
         <StackPanel Margin="20">
-            <TextBlock Text="Clients Management" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
+            <TextBlock Text="Clients Management" FontSize="24" FontWeight="Bold" Margin="0,0,0,20" />
 
-          
+            <!-- Add Client Button -->
+           
 
-            <DataGrid x:Name="ClientsDataGrid" AutoGenerateColumns="False" Height="auto" Width="auto" Margin="0,20,0,0" IsReadOnly="True">
-                <!-- Define Columns -->
+            <!-- Clients List -->
+            <DataGrid x:Name="ClientsDataGrid" AutoGenerateColumns="False" Margin="0,20,0,0" HeadersVisibility="Column">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Client ID" Binding="{Binding Id}" Width="100"/>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="200"/>
-                    <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200"/>
-
-                    <!-- Delete Button Column -->
+                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50" />
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="150" />
+                    <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200" />
                     <DataGridTemplateColumn Header="Actions" Width="100">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Delete" Background="#E74C3C" Foreground="White" Width="80" 
-                                        CommandParameter="{Binding Id}" Click="DeleteClientButton_Click"/>
+                                <Button Content="Delete" Width="80" Height="30" Background="#E74C3C" Foreground="White"
+                                        Click="DeleteClientButton_Click"
+                                        CommandParameter="{Binding Id}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-
-            <Button Content="Add Client" Width="100" Height="30" Background="#27AE60" Foreground="White" Margin="5,15,0,0" Click="MenuItemClick" />
-
+            <Button Content="Add New Client" Width="150" Height="30" Margin="0 10 0 0" Background="#27AE60" Foreground="White"
+         Click="AddNewClientButton_Click" />
         </StackPanel>
+        
     </Grid>
 </Page>

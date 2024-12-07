@@ -1,13 +1,15 @@
 ﻿using Hotel_Management.Models;
+using HotelManagement.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Hotel_Management.Services
 {
-    public class ClientService
+    public class ClientService: Window
     {
         private readonly AppDbContext _context;
 
@@ -23,12 +25,21 @@ namespace Hotel_Management.Services
 
         public void DeleteClient(int clientId)
         {
+           
+           
             var client = _context.Clients.Find(clientId);
             if (client != null)
             {
                 _context.Clients.Remove(client);
                 _context.SaveChanges();
+           
             }
+        }
+
+        public void AddClient(Client client)
+        {
+            _context.Clients.Add(client);
+            _context.SaveChanges();
         }
     }
 }
