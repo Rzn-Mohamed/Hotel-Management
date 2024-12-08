@@ -1,4 +1,5 @@
 ﻿using Hotel_Management.Models;
+using HotelManagement.Models;
 using Microsoft.EntityFrameworkCore;
 
 public class AppDbContext : DbContext
@@ -7,6 +8,7 @@ public class AppDbContext : DbContext
     public DbSet<Manager> Managers { get; set; } = null!;
     public DbSet<Employee> Employees { get; set; } = null!;
     public DbSet<Client> Clients { get; set; } = null!;
+
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -21,9 +23,12 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Client>().ToTable("Clients");
         modelBuilder.Entity<Manager>().ToTable("Managers");
         modelBuilder.Entity<Employee>().ToTable("Employees");
+        
 
 
-    }
+
+
+}
 
 
 
