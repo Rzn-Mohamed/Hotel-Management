@@ -5,7 +5,8 @@ namespace HotelManagement.Helpers
 {
     public static class TextBoxHelper
     {
-        // Dependency Property for Placeholder Text
+        #region PlaceholderText
+
         public static readonly DependencyProperty PlaceholderTextProperty =
             DependencyProperty.RegisterAttached(
                 "PlaceholderText",
@@ -13,72 +14,102 @@ namespace HotelManagement.Helpers
                 typeof(TextBoxHelper),
                 new PropertyMetadata(string.Empty, OnPlaceholderTextChanged));
 
-        public static string GetPlaceholderText(FrameworkElement element) => (string)element.GetValue(PlaceholderTextProperty);
-        public static void SetPlaceholderText(FrameworkElement element, string value) => element.SetValue(PlaceholderTextProperty, value);
+        public static string GetPlaceholderText(DependencyObject obj)
+        {
+            return (string)obj.GetValue(PlaceholderTextProperty);
+        }
+
+        public static void SetPlaceholderText(DependencyObject obj, string value)
+        {
+            obj.SetValue(PlaceholderTextProperty, value);
+        }
 
         private static void OnPlaceholderTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is TextBox textBox)
             {
-                textBox.GotFocus -= RemovePlaceholder;
-                textBox.LostFocus -= AddPlaceholder;
+                textBox.GotFocus -= TextBox_GotFocus;
+                textBox.LostFocus -= TextBox_LostFocus;
 
-                textBox.LostFocus += AddPlaceholder;
-                textBox.GotFocus += RemovePlaceholder;
+                textBox.GotFocus += TextBox_GotFocus;
+                textBox.LostFocus += TextBox_LostFocus;
 
-                // Initially set the placeholder
-                AddPlaceholder(textBox, null);
+                SetPlaceholder(textBox);
             }
             else if (d is PasswordBox passwordBox)
             {
-                passwordBox.GotFocus -= RemovePasswordPlaceholder;
-                passwordBox.LostFocus -= AddPasswordPlaceholder;
+                passwordBox.GotFocus -= PasswordBox_GotFocus;
+                passwordBox.LostFocus -= PasswordBox_LostFocus;
 
-                passwordBox.LostFocus += AddPasswordPlaceholder;
-                passwordBox.GotFocus += RemovePasswordPlaceholder;
+                passwordBox.GotFocus += PasswordBox_GotFocus;
+                passwordBox.LostFocus += PasswordBox_LostFocus;
 
-                // Initially set the placeholder
-                AddPasswordPlaceholder(passwordBox, null);
+                SetPlaceholder(passwordBox);
             }
         }
 
-        // TextBox Placeholder Logic
-        private static void AddPlaceholder(object sender, RoutedEventArgs e)
+        private static void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (sender is TextBox textBox && string.IsNullOrEmpty(textBox.Text))
-            {
-                textBox.Text = GetPlaceholderText(textBox);
-                textBox.Foreground = System.Windows.Media.Brushes.Gray;
-            }
-        }
-
-        private static void RemovePlaceholder(object sender, RoutedEventArgs e)
-        {
-            if (sender is TextBox textBox && textBox.Text == GetPlaceholderText(textBox))
+            if (sender is TextBox textBox && IsPlaceholderActive(textBox))
             {
                 textBox.Text = string.Empty;
-                textBox.Foreground = System.Windows.Media.Brushes.Black;
+                textBox.Foreground = SystemColors.ControlTextBrush;
             }
         }
 
-        // PasswordBox Placeholder Logic
-        private static void AddPasswordPlaceholder(object sender, RoutedEventArgs e)
+        private static void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (sender is PasswordBox passwordBox && string.IsNullOrEmpty(passwordBox.Password))
+            if (sender is TextBox textBox)
             {
-                var placeholderText = GetPlaceholderText(passwordBox);
-                passwordBox.Tag = placeholderText;
-                passwordBox.Foreground = System.Windows.Media.Brushes.Gray;
+                SetPlaceholder(textBox);
             }
         }
 
-        private static void RemovePasswordPlaceholder(object sender, RoutedEventArgs e)
+        private static void PasswordBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (sender is PasswordBox passwordBox && (string)passwordBox.Tag == GetPlaceholderText(passwordBox))
+            if (sender is PasswordBox passwordBox && IsPlaceholderActive(passwordBox))
             {
-                passwordBox.Tag = string.Empty;
-                passwordBox.Foreground = System.Windows.Media.Brushes.Black;
+                passwordBox.Password = string.Empty;
+                passwordBox.Foreground = SystemColors.ControlTextBrush;
             }
         }
+
+        private static void PasswordBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is PasswordBox passwordBox)
+            {
+                SetPlaceholder(passwordBox);
+            }
+        }
+
+        private static void SetPlaceholder(TextBox textBox)
+        {
+            if (string.IsNullOrEmpty(textBox.Text))
+            {
+                textBox.Text = GetPlaceholderText(textBox);
+                textBox.Foreground = SystemColors.GrayTextBrush;
+            }
+        }
+
+        private static void SetPlaceholder(PasswordBox passwordBox)
+        {
+            if (string.IsNullOrEmpty(passwordBox.Password))
+            {
+                passwordBox.Tag = GetPlaceholderText(passwordBox);
+                passwordBox.Foreground = SystemColors.GrayTextBrush;
+            }
+        }
+
+        private static bool IsPlaceholderActive(TextBox textBox)
+        {
+            return textBox.Text == GetPlaceholderText(textBox);
+        }
+
+        private static bool IsPlaceholderActive(PasswordBox passwordBox)
+        {
+            return passwordBox.Tag as string == GetPlaceholderText(passwordBox);
+        }
+
+        #endregion
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
 using System.Windows;
+using Hotel_Management.Views;
 
 namespace HotelManagement.Views
 {

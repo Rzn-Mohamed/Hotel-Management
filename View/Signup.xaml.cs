@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using Hotel_Management.Models;
-using System.Windows.Controls;
 
 namespace HotelManagement.Views
 {
@@ -19,31 +18,20 @@ namespace HotelManagement.Views
             var name = NameTextBox.Text;
             var email = EmailTextBox.Text;
             var password = PasswordBox.Password;
-            var role = (RoleComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
 
-            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(role))
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
                 MessageBox.Show("Please fill out all fields.");
                 return;
             }
 
-            User newUser;
-
-            switch (role)
+            // Create a new Client by default (or adjust to another user type)
+            var newUser = new Client
             {
-                case "Admin":
-                    newUser = new Manager { Name = name, Email = email, Password = password };
-                    break;
-                case "Employee":
-                    newUser = new Employee { Name = name, Email = email, Password = password };
-                    break;
-                case "Client":
-                    newUser = new Client { Name = name, Email = email, Password = password };
-                    break;
-                default:
-                    MessageBox.Show("Invalid role selected.");
-                    return;
-            }
+                Name = name,
+                Email = email,
+                Password = password
+            };
 
             _context.Users.Add(newUser);
             _context.SaveChanges();

@@ -1,5 +1,4 @@
 ﻿using Hotel_Management.Models;
-using HotelManagement.Models;
 using Microsoft.EntityFrameworkCore;
 
 public class AppDbContext : DbContext
@@ -8,8 +7,7 @@ public class AppDbContext : DbContext
     public DbSet<Manager> Managers { get; set; } = null!;
     public DbSet<Employee> Employees { get; set; } = null!;
     public DbSet<Client> Clients { get; set; } = null!;
-
-
+    public DbSet<Rooms> Rooms { get; set; } = null!; // Added DbSet for Room model
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -19,19 +17,12 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        // Table mappings
         modelBuilder.Entity<User>().ToTable("Users");
         modelBuilder.Entity<Client>().ToTable("Clients");
         modelBuilder.Entity<Manager>().ToTable("Managers");
         modelBuilder.Entity<Employee>().ToTable("Employees");
-        
-
-
-
-
-}
-
-
-
-
-
+        modelBuilder.Entity<Rooms>().ToTable("Rooms");  // Ensure Room table mapping
+    }
 }
