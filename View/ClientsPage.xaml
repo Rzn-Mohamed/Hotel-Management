@@ -6,8 +6,13 @@
         <StackPanel Margin="20">
             <TextBlock Text="Clients Management" FontSize="24" FontWeight="Bold" Margin="0,0,0,20" />
 
-            <!-- Add Client Button -->
-           
+            <!-- Add Client and Import Buttons -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,10,0,0">
+                <Button Content="Add New Client" Width="150" Height="30" Background="#27AE60" Foreground="White"
+                        Click="AddNewClientButton_Click" />
+                <Button Content="Import from Excel" Width="150" Height="30" Margin="10,0,0,0" Background="#2980B9" Foreground="White"
+                        Click="ImportFromExcelButton_Click" />
+            </StackPanel>
 
             <!-- Clients List -->
             <DataGrid x:Name="ClientsDataGrid" AutoGenerateColumns="False" Margin="0,20,0,0" HeadersVisibility="Column">
@@ -26,9 +31,6 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            <Button Content="Add New Client" Width="150" Height="30" Margin="0 10 0 0" Background="#27AE60" Foreground="White"
-         Click="AddNewClientButton_Click" />
         </StackPanel>
-        
     </Grid>
 </Page>

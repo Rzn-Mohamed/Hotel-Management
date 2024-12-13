@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
+
 namespace Hotel_Management.Services
 {
     public class ClientService: Window
