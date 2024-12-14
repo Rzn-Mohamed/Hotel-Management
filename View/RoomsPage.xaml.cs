@@ -16,7 +16,7 @@ namespace Hotel_Management.Views
             InitializeComponent();
             _rooms = new ObservableCollection<Rooms>();
             RoomsListView.ItemsSource = _rooms;
-            LoadRooms();  // Load rooms from the database when the page is first loaded
+            LoadRooms();  
         }
 
         private void AddRoomButton_Click(object sender, RoutedEventArgs e)
@@ -24,8 +24,8 @@ namespace Hotel_Management.Views
             AddRoomWindow addRoomWindow = new AddRoomWindow(_rooms);
             if (addRoomWindow.ShowDialog() == true)
             {
-                // The room was added, so refresh the collection
-                LoadRooms();  // Fetch the updated list of rooms
+               
+                LoadRooms();  
             }
         }
 
@@ -34,13 +34,10 @@ namespace Hotel_Management.Views
             var selectedRoom = (Rooms)RoomsListView.SelectedItem;
             if (selectedRoom != null)
             {
-                // Create an instance of the EditRoomWindow and pass the selected room
                 EditRoomWindow editRoomWindow = new EditRoomWindow(selectedRoom);
 
-                // Show the edit window and wait for it to be closed
                 if (editRoomWindow.ShowDialog() == true)
                 {
-                    // After editing, refresh the room list
                     LoadRooms();
                 }
             }
@@ -61,14 +58,12 @@ namespace Hotel_Management.Views
                                               "Delete Room", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
-                    // Remove the room from the ObservableCollection
                     _rooms.Remove(room);
 
-                    // Also remove it from the database
                     using (var dbContext = new AppDbContext())
                     {
-                        dbContext.Rooms.Remove(room);  // Remove room from the database
-                        dbContext.SaveChanges();  // Save changes to the database
+                        dbContext.Rooms.Remove(room);  
+                        dbContext.SaveChanges();  
                     }
 
                     MessageBox.Show("Room deleted successfully!");
@@ -81,17 +76,35 @@ namespace Hotel_Management.Views
             using (var dbContext = new AppDbContext())
             {
                 var rooms = dbContext.Rooms.ToList();  // Fetch rooms from the database
-                _rooms.Clear();  // Clear the existing collection
+                _rooms.Clear();  // Clear the ObservableCollection
                 foreach (var room in rooms)
                 {
-                    _rooms.Add(room);  // Add each room from the database to the ObservableCollection
+                    _rooms.Add(room);  // Add each room to the collection
                 }
             }
         }
 
+
+        private void AddRoom(Rooms newRoom)
+        {
+            try
+            {
+                using (var dbContext = new AppDbContext())
+                {
+                    dbContext.Rooms.Add(newRoom); // Add room to database
+                    dbContext.SaveChanges();      // Commit changes
+                }
+                LoadRooms();  // Refresh the displayed room list
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+        }
+
+
         private void RoomsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // This method can be used if you want to handle selection changes
         }
     }
 }

@@ -76,5 +76,11 @@ namespace Hotel_Management.Views
             MessageBox.Show("Room added successfully!");
             this.Close();
         }
+
+        public Rooms NewRoom { get; private set; } = null!;
+
+        
+
+
     }
 }

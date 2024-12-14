@@ -14,8 +14,6 @@ namespace HotelManagement.Views
             InitializeComponent();
             _clientService = new ClientService(new AppDbContext());
         }
-
-
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             // Validate inputs
@@ -30,7 +28,7 @@ namespace HotelManagement.Views
 
             // Create new client object
             var client = new Client
-            {
+            {  
                 Name = NameTextBox.Text.Trim(),
                 Email = EmailTextBox.Text.Trim(),
                 Password = PasswordBox.Password,

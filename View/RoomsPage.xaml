@@ -21,7 +21,7 @@
 
         <!-- Room List Section -->
         <ListView x:Name="RoomsListView" Grid.Row="1" Margin="20,0,20,20" Background="White" BorderBrush="#BDC3C7" BorderThickness="1" 
-                  FontSize="14" HorizontalAlignment="Stretch">
+                  FontSize="14" HorizontalAlignment="Stretch" SelectionChanged="RoomsListView_SelectionChanged">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Room Number" DisplayMemberBinding="{Binding NumR}" Width="120" />
@@ -39,7 +39,9 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
+                                    <!-- Edit Button -->
                                     <Button Content="Edit" Width="60" Height="30" Click="EditRoomButton_Click" Margin="5"/>
+                                    <!-- Delete Button -->
                                     <Button Content="Delete" Width="60" Height="30" Click="DeleteRoomButton_Click" Margin="5"/>
                                 </StackPanel>
                             </DataTemplate>
