@@ -71,6 +71,63 @@ namespace HotelManagement.Views
             }
         }
 
+
+        private void ExportToExcelButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_clients.Count > 0)
+            {
+                // Open a SaveFileDialog to choose where to save the file
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    Filter = "Excel Files|*.xlsx",
+                    Title = "Save Excel File"
+                };
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filePath = saveFileDialog.FileName;
+                    ExportClientsToExcel(filePath);
+                }
+            }
+            else
+            {
+                MessageBox.Show("No clients found to export.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void ExportClientsToExcel(string filePath)
+        {
+            try
+            {
+                using (var package = new ExcelPackage(new FileInfo(filePath)))
+                {
+                    // Create a worksheet
+                    var worksheet = package.Workbook.Worksheets.Add("Clients");
+
+                    // Add headers to the Excel sheet
+                    worksheet.Cells[1, 1].Value = "ID";
+                    worksheet.Cells[1, 2].Value = "Name";
+                    worksheet.Cells[1, 3].Value = "Email";
+
+                    // Add data from ObservableCollection to the worksheet
+                    for (int i = 0; i < _clients.Count; i++)
+                    {
+                        worksheet.Cells[i + 2, 1].Value = _clients[i].Id;
+                        worksheet.Cells[i + 2, 2].Value = _clients[i].Name;
+                        worksheet.Cells[i + 2, 3].Value = _clients[i].Email;
+                    }
+
+                    // Save the file
+                    package.Save();
+                    MessageBox.Show("Clients exported successfully!");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error exporting clients: {ex.Message}");
+            }
+        }
+
         private void ImportClientsFromExcel(string filePath)
         {
             if (!File.Exists(filePath))
@@ -97,7 +154,8 @@ namespace HotelManagement.Views
                     {
                         Name = worksheet.Cells[row, 1].Text.Trim(),
                         Email = worksheet.Cells[row, 2].Text.Trim(),
-                        Password = worksheet.Cells[row, 3].Text.Trim()
+                        Password = worksheet.Cells[row, 3].Text.Trim(),
+                        Role = worksheet.Cells[row, 4].Text.Trim()
                     };
 
                     importedClients.Add(client);
@@ -162,5 +220,24 @@ namespace HotelManagement.Views
                 }
             }
         }
+
+        private void serarchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+          
+            if (int.TryParse(serarchTextBox.Text, out int searchId))
+            {
+        
+                var filteredClients = _clients.Where(client => client.Id == searchId).ToList();
+
+               
+                ClientsDataGrid.ItemsSource = filteredClients;
+            }
+            else
+            {
+             
+                ClientsDataGrid.ItemsSource = _clients;
+            }
+        }
+
     }
 }
