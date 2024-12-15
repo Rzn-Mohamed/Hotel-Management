@@ -20,8 +20,8 @@
         </StackPanel>
 
         <!-- Room List Section -->
-        <ListView x:Name="RoomsListView" Grid.Row="1" Margin="20,0,20,20" Background="White" BorderBrush="#BDC3C7" BorderThickness="1" 
-                  FontSize="14" HorizontalAlignment="Stretch" SelectionChanged="RoomsListView_SelectionChanged">
+        <ListView x:Name="RoomsListView" SelectionChanged="RoomsListView_SelectionChanged" Grid.Row="1" Margin="20,0,20,20" Background="White" BorderBrush="#BDC3C7" BorderThickness="1" 
+          FontSize="14" HorizontalAlignment="Stretch">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Room Number" DisplayMemberBinding="{Binding NumR}" Width="120" />

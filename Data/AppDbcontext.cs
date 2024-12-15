@@ -7,7 +7,10 @@ public class AppDbContext : DbContext
     public DbSet<Manager> Managers { get; set; } = null!;
     public DbSet<Employee> Employees { get; set; } = null!;
     public DbSet<Client> Clients { get; set; } = null!;
-    public DbSet<Rooms> Rooms { get; set; } = null!; 
+    public DbSet<Rooms> Rooms { get; set; } = null!;
+    public DbSet<Employee> Employee { get; set; } = null!;
+
+
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -24,7 +27,8 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Client>().ToTable("Clients");
         modelBuilder.Entity<Manager>().ToTable("Managers");
         modelBuilder.Entity<Employee>().ToTable("Employees");
-        modelBuilder.Entity<Rooms>().ToTable("Rooms");  
+        modelBuilder.Entity<Rooms>().ToTable("Rooms");
 
+        
     }
 }

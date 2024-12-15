@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace HotelManagement.Views
 {
@@ -11,7 +10,7 @@ namespace HotelManagement.Views
         public Login()
         {
             InitializeComponent();
-            _context = new AppDbContext(); // Replace with your EF DbContext
+            _context = new AppDbContext();
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -24,8 +23,7 @@ namespace HotelManagement.Views
             {
                 MessageBox.Show($"Welcome, {user.Name}!");
 
-                // Navigate to MainWindow
-                MainWindow mainWindow = new MainWindow();
+                MainWindow mainWindow = new MainWindow(user.Role);
                 mainWindow.Show();
                 this.Close();
             }

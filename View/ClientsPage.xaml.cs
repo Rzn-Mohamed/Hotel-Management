@@ -14,6 +14,24 @@ namespace HotelManagement.Views
     {
         private ObservableCollection<Client> _clients;
 
+        private string _userRole;
+
+        //public ClientPage(string role)
+        //{
+        //    InitializeComponent();
+        //    _userRole = role;
+        //    ApplyRoleRestrictions();
+        //}
+
+        //private void ApplyRoleRestrictions()
+        //{
+        //    if (_userRole == "Employee")
+        //    {
+        //        // Disable delete button
+        //        DeleteClientButton.IsEnabled = false;
+        //    }
+        //}
+
         public ClientsPage()
         {
             InitializeComponent();

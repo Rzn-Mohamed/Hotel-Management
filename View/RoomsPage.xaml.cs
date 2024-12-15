@@ -1,43 +1,88 @@
-﻿using Hotel_Management.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Hotel_Management.Models;
+using Hotel_Management.View;
+using Hotel_Management.Views;
 
 namespace Hotel_Management.Views
 {
     public partial class RoomsPage : Page
     {
-        private ObservableCollection<Rooms> _rooms;
+        private AppDbContext _dbContext;
+        private string _userRole;
+
+        public RoomsPage(string role)
+        {
+            InitializeComponent();
+            _dbContext = new AppDbContext();
+            _userRole = role;
+            ApplyRoleRestrictions();
+            LoadRooms();
+        }
 
         public RoomsPage()
         {
             InitializeComponent();
-            _rooms = new ObservableCollection<Rooms>();
-            RoomsListView.ItemsSource = _rooms;
-            LoadRooms();  
+            _dbContext = new AppDbContext();
+            _userRole = string.Empty;
+            LoadRooms();
+        }
+
+        private void ApplyRoleRestrictions()
+        {
+            if (_userRole == "Employee")
+            {
+                var deleteRoomButton = (Button)FindName("DeleteRoomButton");
+                if (deleteRoomButton != null)
+                {
+                    deleteRoomButton.IsEnabled = false;
+                }
+            }
+        }
+
+
+
+        private void LoadRooms()
+        {
+            RoomsListView.ItemsSource = _dbContext.Rooms.ToList();
         }
 
         private void AddRoomButton_Click(object sender, RoutedEventArgs e)
         {
-            AddRoomWindow addRoomWindow = new AddRoomWindow(_rooms);
+            var addRoomWindow = new AddEditRoomWindow();
             if (addRoomWindow.ShowDialog() == true)
             {
-               
-                LoadRooms();  
+                var newRoom = new Rooms
+                {
+                    NumR = addRoomWindow.Room.NumR,
+                    Nprice = addRoomWindow.Room.Nprice,
+                    TypeR = addRoomWindow.Room.TypeR,
+                    Status = addRoomWindow.Room.Status,
+                    PicturePath = addRoomWindow.Room.PicturePath
+                };
+
+                _dbContext.Rooms.Add(newRoom);
+                _dbContext.SaveChanges();
+                LoadRooms();
             }
         }
 
         private void EditRoomButton_Click(object sender, RoutedEventArgs e)
         {
-            var selectedRoom = (Rooms)RoomsListView.SelectedItem;
-            if (selectedRoom != null)
+            if (RoomsListView.SelectedItem is Rooms selectedRoom)
             {
-                EditRoomWindow editRoomWindow = new EditRoomWindow(selectedRoom);
-
+                var editRoomWindow = new AddEditRoomWindow(selectedRoom);
                 if (editRoomWindow.ShowDialog() == true)
                 {
+                    selectedRoom.NumR = editRoomWindow.Room.NumR;
+                    selectedRoom.Nprice = editRoomWindow.Room.Nprice;
+                    selectedRoom.TypeR = editRoomWindow.Room.TypeR;
+                    selectedRoom.Status = editRoomWindow.Room.Status;
+                    selectedRoom.PicturePath = editRoomWindow.Room.PicturePath;
+
+                    _dbContext.Entry(selectedRoom).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    _dbContext.SaveChanges();
                     LoadRooms();
                 }
             }
@@ -49,62 +94,34 @@ namespace Hotel_Management.Views
 
         private void DeleteRoomButton_Click(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
-            var room = button?.DataContext as Rooms;
-
-            if (room != null)
+            if (_userRole == "Employee")
             {
-                var result = MessageBox.Show($"Are you sure you want to delete room {room.NumR}?",
-                                              "Delete Room", MessageBoxButton.YesNo);
+                MessageBox.Show("You do not have permission to delete rooms.");
+                return;
+            }
+
+            if (RoomsListView.SelectedItem is Rooms selectedRoom)
+            {
+                var result = MessageBox.Show($"Are you sure you want to delete room {selectedRoom.NumR}?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.Yes)
                 {
-                    _rooms.Remove(room);
-
-                    using (var dbContext = new AppDbContext())
-                    {
-                        dbContext.Rooms.Remove(room);  
-                        dbContext.SaveChanges();  
-                    }
-
-                    MessageBox.Show("Room deleted successfully!");
+                    _dbContext.Rooms.Remove(selectedRoom);
+                    _dbContext.SaveChanges();
+                    LoadRooms();
                 }
             }
-        }
-
-        private void LoadRooms()
-        {
-            using (var dbContext = new AppDbContext())
+            else
             {
-                var rooms = dbContext.Rooms.ToList();  // Fetch rooms from the database
-                _rooms.Clear();  // Clear the ObservableCollection
-                foreach (var room in rooms)
-                {
-                    _rooms.Add(room);  // Add each room to the collection
-                }
-            }
-        }
-
-
-        private void AddRoom(Rooms newRoom)
-        {
-            try
-            {
-                using (var dbContext = new AppDbContext())
-                {
-                    dbContext.Rooms.Add(newRoom); // Add room to database
-                    dbContext.SaveChanges();      // Commit changes
-                }
-                LoadRooms();  // Refresh the displayed room list
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error: {ex.Message}");
+                MessageBox.Show("Please select a room to delete.");
             }
         }
 
 
         private void RoomsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (RoomsListView.SelectedItem is Rooms selectedRoom)
+            {
+            }
         }
     }
 }

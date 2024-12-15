@@ -25,6 +25,8 @@
             <Button Content="Dashboard" Tag="DashboardPage" Click="NavigateToPage" Style="{StaticResource SidebarButtonStyle}"/>
             <Button Content="Rooms" Tag="RoomsPage" Click="NavigateToPage" Style="{StaticResource SidebarButtonStyle}"/>
             <Button Content="Clients" Tag="ClientsPage" Click="NavigateToPage" Style="{StaticResource SidebarButtonStyle}"/>
+            <Button Content="Employee" Tag="EmployeePage" Click="NavigateToPage" Style="{StaticResource SidebarButtonStyle}"/>
+
         </StackPanel>
 
         <!-- Main Content Area -->

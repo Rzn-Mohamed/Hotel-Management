@@ -24,11 +24,11 @@ namespace Hotel_Management.Models
     public class Rooms
     {
         public int Id { get; set; }
-        public string NumR { get; set; } // Room Number
-        public decimal Nprice { get; set; } // Room Price
-        public RoomType TypeR { get; set; } // Room Type
-        public RoomStatus Status { get; set; } // Room Status
-        public string PicturePath { get; set; } // Room Picture Path
+        public string NumR { get; set; }
+        public decimal Nprice { get; set; } 
+        public RoomType TypeR { get; set; } 
+        public RoomStatus Status { get; set; } 
+        public string PicturePath { get; set; } 
     }
     
 }
