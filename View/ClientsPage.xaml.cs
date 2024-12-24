@@ -42,8 +42,7 @@ namespace HotelManagement.Views
 
         private void AddNewClientButton_Click(object sender, RoutedEventArgs e)
         {
-            // Logic to add a new client
-            MessageBox.Show("Add New Client functionality is not implemented yet.");
+            NavigationService.Navigate(new AddClientPage());
         }
 
         private void ImportFromExcelButton_Click(object sender, RoutedEventArgs e)

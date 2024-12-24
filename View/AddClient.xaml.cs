@@ -32,6 +32,7 @@ namespace HotelManagement.Views
                 Name = NameTextBox.Text.Trim(),
                 Email = EmailTextBox.Text.Trim(),
                 Password = PasswordBox.Password,
+                Role ="client",
                 isClient = true
             };
 
