@@ -18,6 +18,7 @@ namespace HotelManagement.Views
             var name = NameTextBox.Text;
             var email = EmailTextBox.Text;
             var password = PasswordBox.Password;
+            var role = "admin";
 
             if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
@@ -30,7 +31,8 @@ namespace HotelManagement.Views
             {
                 Name = name,
                 Email = email,
-                Password = password
+                Password = password,
+                Role = role,
             };
 
             _context.Users.Add(newUser);
