@@ -9,6 +9,7 @@ public class AppDbContext : DbContext
     public DbSet<Client> Clients { get; set; } = null!;
     public DbSet<Rooms> Rooms { get; set; } = null!;
     public DbSet<Employee> Employee { get; set; } = null!;
+    public DbSet<ReservationModel> Reservation { get; set; } = null!;
 
 
 

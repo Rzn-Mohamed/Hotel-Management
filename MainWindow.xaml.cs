@@ -62,6 +62,9 @@ namespace HotelManagement.Views
                     case "EmployeePage":
                         MainFrame.Navigate(new EmployeePage());
                         break;
+                    case "Reservation":
+                        MainFrame.Navigate(new Reservation());
+                        break;
                 }
             }
         }

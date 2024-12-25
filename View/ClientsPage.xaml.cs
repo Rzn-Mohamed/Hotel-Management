@@ -237,6 +237,9 @@ namespace HotelManagement.Views
             }
         }
 
+        private void ClientsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
 
+        }
     }
 }

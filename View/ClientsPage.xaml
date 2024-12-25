@@ -128,7 +128,7 @@
             <Border Grid.Row="2" Background="White" CornerRadius="8" BorderBrush="#EEEEEE" BorderThickness="1">
                 <DataGrid x:Name="ClientsDataGrid" AutoGenerateColumns="False"
                          RowBackground="White" AlternatingRowBackground="#FAFAFA"
-                         IsReadOnly="True" CanUserAddRows="False">
+                         IsReadOnly="True" CanUserAddRows="False" SelectionChanged="ClientsDataGrid_SelectionChanged">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="80"/>
                         <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
