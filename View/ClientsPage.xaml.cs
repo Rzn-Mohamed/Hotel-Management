@@ -220,23 +220,23 @@ namespace HotelManagement.Views
             }
         }
 
-        private void serarchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-          
-            if (int.TryParse(serarchTextBox.Text, out int searchId))
+            if (!string.IsNullOrWhiteSpace(searchTextBox.Text))
             {
-        
-                var filteredClients = _clients.Where(client => client.Id == searchId).ToList();
+                var filteredClients = _clients.Where(client => client.Name == searchTextBox.Text).ToList();
 
-               
+
                 ClientsDataGrid.ItemsSource = filteredClients;
+
             }
             else
             {
-             
+               
                 ClientsDataGrid.ItemsSource = _clients;
             }
         }
+
 
     }
 }

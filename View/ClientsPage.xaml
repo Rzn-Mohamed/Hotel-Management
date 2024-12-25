@@ -116,9 +116,9 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="40"/>
                     </Grid.ColumnDefinitions>
-                    <TextBox x:Name="serarchTextBox"  Height="35" 
+                    <TextBox x:Name="searchTextBox"  Height="35" 
                              Padding="10,5" VerticalContentAlignment="Center"
-                             TextChanged="serarchTextBox_TextChanged"/>
+                             TextChanged="searchTextBox_TextChanged"/>
                     <TextBlock Grid.Column="1" Text="🔍" FontSize="20" 
                               VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Grid>
