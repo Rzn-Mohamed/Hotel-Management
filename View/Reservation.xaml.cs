@@ -1,4 +1,5 @@
 ﻿using Hotel_Management.Models;
+using HotelManagement.Views;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -39,5 +40,17 @@ namespace Hotel_Management.View
                 }
             }
         }
+
+        private void AddReservationButton_Click(Object sender,RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new AddReservation());
+        }
+
+      
+
+       
+
+
+
     }
 }

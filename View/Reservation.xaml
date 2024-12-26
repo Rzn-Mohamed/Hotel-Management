@@ -26,30 +26,44 @@
             <Setter Property="BorderThickness" Value="0,0,0,1"/>
             <Setter Property="BorderBrush" Value="#EEEEEE"/>
         </Style>
+
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Margin" Value="5,5,0,0"/>
+            <Setter Property="Background" Value="#3498DB"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+           
+        </Style>
     </Page.Resources>
 
     <!-- Layout -->
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <!-- Header -->
+            <RowDefinition Height="Auto"/>
+            <!-- Action Bar -->
+            <RowDefinition Height="Auto"/>
+            <!-- DataGrid -->
             <RowDefinition Height="*"/>
-            <!-- Content -->
         </Grid.RowDefinitions>
 
         <!-- Header Section -->
-        <Border Background="White" Grid.Row="0" Padding="20" Margin="0,0,0,20">
-            <TextBlock Text="Reservation Management" FontSize="26" FontWeight="SemiBold" 
-                       Foreground="#2C3E50"/>
+        <Border Background="White" Grid.Row="0" Padding="20" Margin="0,0,0,10">
+            <TextBlock Text="Reservation Management" FontSize="26" FontWeight="SemiBold" Foreground="#2C3E50"/>
         </Border>
-
-        <!-- DataGrid Section -->
-        <DataGrid x:Name="ReservationDataGrid" Grid.Row="1" AutoGenerateColumns="False" SelectionChanged="DataGrid_SelectionChanged">
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10,0,0,10">
+            <Button Content="Add New Reservation" Style="{StaticResource ActionButton}" Click="AddReservationButton_Click"/>
+        </StackPanel>
+        <DataGrid x:Name="ReservationDataGrid" Grid.Row="2" AutoGenerateColumns="False" SelectionChanged="DataGrid_SelectionChanged">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Reservation ID" Binding="{Binding Id}" />
-                <DataGridTextColumn Header="Guest Name" Binding="{Binding GuestName}" />
-                <DataGridTextColumn Header="Check-in Date" Binding="{Binding dateDebut, StringFormat='MM/dd/yyyy'}" />
-                <DataGridTextColumn Header="Check-out Date" Binding="{Binding dateFin, StringFormat='MM/dd/yyyy'}" />
+                <DataGridTextColumn Header="Reservation ID" Binding="{Binding Id}" Width="*"/>
+                <DataGridTextColumn Header="Guest Name" Binding="{Binding GuestName}" Width="*"/>
+                <DataGridTextColumn Header="Check-in Date" Binding="{Binding dateDebut, StringFormat='MM/dd/yyyy'}" Width="*"/>
+                <DataGridTextColumn Header="Check-out Date" Binding="{Binding dateFin, StringFormat='MM/dd/yyyy'}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
