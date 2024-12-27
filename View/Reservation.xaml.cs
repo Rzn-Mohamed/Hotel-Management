@@ -46,11 +46,60 @@ namespace Hotel_Management.View
             NavigationService.Navigate(new AddReservation());
         }
 
-      
+        private void DeleteClientButton_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var reservationId = button?.CommandParameter as int?;
 
-       
+            if (reservationId.HasValue)
+            {
+                using (var dbContext = new AppDbContext())
+                {
+                    var reservation = dbContext.Reservation.FirstOrDefault(r => r.Id == reservationId.Value);
+
+                    if (reservation != null)
+                    {
+                        // Confirm deletion
+                        var result = MessageBox.Show("Are you sure you want to delete this reservation?",
+                                                     "Confirm Deletion", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            try
+                            {
+                                // Remove from the in-memory collection
+                                dbContext.Reservation.Remove(reservation);
+
+
+                                dbContext.Reservation.Remove(reservation);
+                                dbContext.SaveChanges();
+
+
+                                MessageBox.Show("Reservation deleted successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show($"Error deleting reservation: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Reservation not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Invalid reservation ID.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            }
+        }
+
+
+
+
+
 
 
 
     }
-}

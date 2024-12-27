@@ -13,5 +13,7 @@ namespace Hotel_Management.Models
 
         public DateTime dateFin { get; set; }
         public String GuestName { get; set; }
+        public String GuestEmail { get; set; }
+        public String Guestadresse { get; set; }
     }
 }

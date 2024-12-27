@@ -161,7 +161,7 @@ namespace HotelManagement.Views
                 }
             }
 
-            // Add imported clients to the database and update UI
+         
             using (var dbContext = new AppDbContext())
             {
                 dbContext.Clients.AddRange(importedClients); 
@@ -175,7 +175,6 @@ namespace HotelManagement.Views
                 }
             }
 
-            // Add imported clients to the ObservableCollection to update the UI
             foreach (var client in importedClients)
             {
                 _clients.Add(client);
@@ -205,10 +204,9 @@ namespace HotelManagement.Views
                 var client = _clients.FirstOrDefault(c => c.Id == clientId.Value);
                 if (client != null)
                 {
-                    // Remove from collection
+                  
                     _clients.Remove(client);
 
-                    // Remove from database
                     using (var dbContext = new AppDbContext())
                     {
                         dbContext.Clients.Remove(client);
