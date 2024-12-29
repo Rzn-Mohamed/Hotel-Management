@@ -50,8 +50,8 @@
         </StackPanel>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
-            <Button Content="Cancel" Click="Cancel_Click" Width="100" Background="#E74C3C" Foreground="White" />
-            <Button Content="Save" Click="Save_Click" Width="100" Background="#2ECC71" Foreground="White" />
+            <Button Content="Cancel" Click="Cancel_Click" Width="63" Background="#E74C3C" Foreground="White" />
+            <Button Content="Save" Click="Save_Click" Width="63" Background="#2ECC71" Foreground="White" />
         </StackPanel>
     </Grid>
 </Window>

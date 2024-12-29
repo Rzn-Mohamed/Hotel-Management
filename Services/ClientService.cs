@@ -42,5 +42,11 @@ namespace Hotel_Management.Services
             _context.Clients.Add(client);
             _context.SaveChanges();
         }
+
+        public bool ClientExists(string email)
+        {
+            return _context.Clients.Any(c => c.Email == email);
+        }
+
     }
 }

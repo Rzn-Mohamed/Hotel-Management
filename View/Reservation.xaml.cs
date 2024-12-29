@@ -32,16 +32,16 @@ namespace Hotel_Management.View
         {
             using (var dbContext = new AppDbContext())
             {
-                var reservations = dbContext.Reservation.ToList(); 
-                _reservations.Clear(); 
+                var reservations = dbContext.Reservation.ToList();
+                _reservations.Clear();
                 foreach (var reservation in reservations)
                 {
-                    _reservations.Add(reservation); 
+                    _reservations.Add(reservation);
                 }
             }
         }
 
-        private void AddReservationButton_Click(Object sender,RoutedEventArgs e)
+        private void AddReservationButton_Click(Object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new AddReservation());
         }
@@ -66,13 +66,12 @@ namespace Hotel_Management.View
                         {
                             try
                             {
-                                // Remove from the in-memory collection
+                                // Remove from the database
                                 dbContext.Reservation.Remove(reservation);
+                                dbContext.SaveChanges(); // Save changes to the database
 
-
-                                dbContext.Reservation.Remove(reservation);
-                                dbContext.SaveChanges();
-
+                                // Optionally, remove from the in-memory ObservableCollection (UI update)
+                                _reservations.Remove(reservation);
 
                                 MessageBox.Show("Reservation deleted successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                             }
@@ -92,14 +91,9 @@ namespace Hotel_Management.View
             {
                 MessageBox.Show("Invalid reservation ID.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            }
+
+            // Reload reservations to update the list
+            LoadReservations();
         }
-
-
-
-
-
-
-
-
     }
+}

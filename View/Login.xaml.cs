@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Windows;
+using Hotel_Management;
 
 namespace HotelManagement.Views
 {
@@ -38,5 +39,8 @@ namespace HotelManagement.Views
             Signup signup = new Signup();
             signup.Show();
         }
+
+        
+
     }
 }

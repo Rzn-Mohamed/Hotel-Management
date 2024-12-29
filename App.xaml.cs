@@ -14,6 +14,7 @@ namespace Hotel_Management
             base.OnStartup(e);
             var loginWindow = new HotelManagement.Views.Login();
             loginWindow.Show();
+
         }
     }
 }

@@ -12,14 +12,7 @@ namespace Hotel_Management.Views
         private AppDbContext _dbContext;
         private string _userRole;
 
-        public RoomsPage(string role)
-        {
-            InitializeComponent();
-            _dbContext = new AppDbContext();
-            _userRole = role;
-            ApplyRoleRestrictions();
-            LoadRooms();
-        }
+        
 
         public RoomsPage()
         {
@@ -123,5 +116,19 @@ namespace Hotel_Management.Views
             {
             }
         }
+
+        private void SeeMoreButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (RoomsListView.SelectedItem is Rooms selectedRoom)
+            {
+                var roomDetailsPage = new RoomDetailsPage(selectedRoom);
+                NavigationService?.Navigate(roomDetailsPage);
+            }
+            else
+            {
+                MessageBox.Show("Please select a room to view details.");
+            }
+        }
+
     }
 }
