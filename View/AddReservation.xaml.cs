@@ -106,9 +106,16 @@ namespace HotelManagement.Views
             }
             catch (Exception ex)
             {
-                var errorMessage = new CustomMessageBox($"Error saving reservation: {ex.Message}");
+                var errorMessage = new CustomMessageBox($"Error saving reservation: {ex.Message}\n{ex.StackTrace}");
                 errorMessage.ShowDialog();
+
+                if (ex.InnerException != null)
+                {
+                    var innerError = new CustomMessageBox($"Inner exception: {ex.InnerException.Message}");
+                    innerError.ShowDialog();
+                }
             }
+
         }
 
         private bool IsValidEmail(string email)
