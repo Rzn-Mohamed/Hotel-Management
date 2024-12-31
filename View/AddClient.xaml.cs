@@ -29,7 +29,10 @@ namespace HotelManagement.Views
                 Email = EmailTextBox.Text.Trim(),
                 Password = PasswordBox.Password,
                 Role = "client",
-                isClient = true
+                isClient = true,
+                Gender = (GenderComboBox.SelectedItem as ComboBoxItem)?.Content.ToString(),
+                Address = AddressTextBox.Text.Trim(),
+                BirthDate = BirthDatePicker.SelectedDate.Value
             };
 
             _clientService.AddClient(client);

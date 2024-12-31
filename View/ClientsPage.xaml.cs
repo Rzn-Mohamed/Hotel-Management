@@ -100,23 +100,24 @@ namespace HotelManagement.Views
             {
                 using (var package = new ExcelPackage(new FileInfo(filePath)))
                 {
-                    // Create a worksheet
                     var worksheet = package.Workbook.Worksheets.Add("Clients");
-
-                    // Add headers to the Excel sheet
                     worksheet.Cells[1, 1].Value = "ID";
                     worksheet.Cells[1, 2].Value = "Name";
                     worksheet.Cells[1, 3].Value = "Email";
+                    worksheet.Cells[1, 4].Value = "Gender";
+                    worksheet.Cells[1, 5].Value = "Address";
+                    worksheet.Cells[1, 6].Value = "BirthDate";
 
-                    // Add data from ObservableCollection to the worksheet
                     for (int i = 0; i < _clients.Count; i++)
                     {
                         worksheet.Cells[i + 2, 1].Value = _clients[i].Id;
                         worksheet.Cells[i + 2, 2].Value = _clients[i].Name;
                         worksheet.Cells[i + 2, 3].Value = _clients[i].Email;
+                        worksheet.Cells[i + 2, 4].Value = _clients[i].Gender;
+                        worksheet.Cells[i + 2, 5].Value = _clients[i].Address;
+                        worksheet.Cells[i + 2, 6].Value = _clients[i].BirthDate.ToString("MM/dd/yyyy");
                     }
 
-                    // Save the file
                     package.Save();
                     MessageBox.Show("Clients exported successfully!");
                 }
@@ -134,7 +135,6 @@ namespace HotelManagement.Views
                 throw new FileNotFoundException("The specified file does not exist.");
             }
 
-            // Temporary list to hold clients from the file
             var importedClients = new List<Client>();
 
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
@@ -147,24 +147,26 @@ namespace HotelManagement.Views
                 }
 
                 int rowCount = worksheet.Dimension.Rows;
-                for (int row = 2; row <= rowCount; row++) // Skip header row
+                for (int row = 2; row <= rowCount; row++)
                 {
                     var client = new Client
                     {
                         Name = worksheet.Cells[row, 1].Text.Trim(),
                         Email = worksheet.Cells[row, 2].Text.Trim(),
                         Password = worksheet.Cells[row, 3].Text.Trim(),
-                        Role = worksheet.Cells[row, 4].Text.Trim()
+                        Role = worksheet.Cells[row, 4].Text.Trim(),
+                        Gender = worksheet.Cells[row, 5].Text.Trim(),
+                        Address = worksheet.Cells[row, 6].Text.Trim(),
+                        BirthDate = DateTime.Parse(worksheet.Cells[row, 7].Text.Trim())
                     };
 
                     importedClients.Add(client);
                 }
             }
 
-         
             using (var dbContext = new AppDbContext())
             {
-                dbContext.Clients.AddRange(importedClients); 
+                dbContext.Clients.AddRange(importedClients);
                 try
                 {
                     dbContext.SaveChanges();
@@ -204,7 +206,6 @@ namespace HotelManagement.Views
                 var client = _clients.FirstOrDefault(c => c.Id == clientId.Value);
                 if (client != null)
                 {
-                  
                     _clients.Remove(client);
 
                     using (var dbContext = new AppDbContext())
@@ -224,13 +225,10 @@ namespace HotelManagement.Views
             {
                 var filteredClients = _clients.Where(client => client.Name == searchTextBox.Text).ToList();
 
-
                 ClientsDataGrid.ItemsSource = filteredClients;
-
             }
             else
             {
-               
                 ClientsDataGrid.ItemsSource = _clients;
             }
         }

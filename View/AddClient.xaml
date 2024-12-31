@@ -25,6 +25,27 @@
                     <PasswordBox x:Name="PasswordBox" Width="400" Padding="10" FontFamily="Segoe UI" />
                 </StackPanel>
 
+                <!-- Gender -->
+                <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+                    <TextBlock Text="Gender:" FontSize="16" Margin="0,0,0,5" FontFamily="Segoe UI" />
+                    <ComboBox x:Name="GenderComboBox" Width="400" Padding="10" FontFamily="Segoe UI">
+                        <ComboBoxItem Content="Male" />
+                        <ComboBoxItem Content="Female" />
+                    </ComboBox>
+                </StackPanel>
+
+                <!-- Address -->
+                <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+                    <TextBlock Text="Address:" FontSize="16" Margin="0,0,0,5" FontFamily="Segoe UI" />
+                    <TextBox x:Name="AddressTextBox" Width="400" Padding="10" FontFamily="Segoe UI" />
+                </StackPanel>
+
+                <!-- BirthDate -->
+                <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+                    <TextBlock Text="BirthDate:" FontSize="16" Margin="0,0,0,5" FontFamily="Segoe UI" />
+                    <DatePicker x:Name="BirthDatePicker" Width="400" Padding="10" FontFamily="Segoe UI" />
+                </StackPanel>
+
                 <!-- Buttons -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
                     <Button Content="Save" Width="100" Height="40" Background="#27AE60" Foreground="White"
