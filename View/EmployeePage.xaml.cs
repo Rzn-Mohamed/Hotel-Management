@@ -18,59 +18,109 @@ namespace Hotel_Management.View
 
         private void LoadEmployees()
         {
-            // Load employee data from the database into the ListView
-            EmployeeListView.ItemsSource = _dbContext.Employees.ToList();
+            EmployeeDataGrid.ItemsSource = _dbContext.Employees.ToList();
         }
 
-        // Event handler for Add Employee button click
         private void AddEmployeeButton_Click(object sender, RoutedEventArgs e)
         {
             var addEmployeeWindow = new AddEmployeeWindow();
             if (addEmployeeWindow.ShowDialog() == true)
             {
-                LoadEmployees();  // Reload employee list after adding a new employee
+                LoadEmployees();
             }
         }
 
-        // Event handler for Edit button click
         private void EditEmployeeButton_Click(object sender, RoutedEventArgs e)
         {
-            var selectedEmployee = EmployeeListView.SelectedItem as Employee;
+            var button = sender as Button;
+            var employeeId = button?.CommandParameter as int?;
 
-            if (selectedEmployee != null)
+            if (employeeId.HasValue)
             {
-                var editEmployeeWindow = new EditEmployeeWindow(selectedEmployee);
-                if (editEmployeeWindow.ShowDialog() == true)
+                var selectedEmployee = _dbContext.Employees.FirstOrDefault(emp => emp.Id == employeeId.Value);
+                if (selectedEmployee != null)
                 {
-                    LoadEmployees();  // Reload employee list after editing
+                    var editEmployeeWindow = new EditEmployeeWindow(selectedEmployee);
+                    if (editEmployeeWindow.ShowDialog() == true)
+                    {
+                        LoadEmployees();
+                    }
                 }
-            }
-            else
-            {
-                MessageBox.Show("Please select an employee to edit.");
             }
         }
 
-        // Event handler for Delete button click
         private void DeleteEmployeeButton_Click(object sender, RoutedEventArgs e)
         {
-            var selectedEmployee = EmployeeListView.SelectedItem as Employee;
+            var button = sender as Button;
+            var employeeId = button?.CommandParameter as int?;
 
-            if (selectedEmployee != null)
+            if (employeeId.HasValue)
             {
-                var result = MessageBox.Show($"Are you sure you want to delete {selectedEmployee.Name}?",
-                                             "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if (result == MessageBoxResult.Yes)
+                var selectedEmployee = _dbContext.Employees.FirstOrDefault(emp => emp.Id == employeeId.Value);
+                if (selectedEmployee != null)
                 {
-                    _dbContext.Employees.Remove(selectedEmployee);
-                    _dbContext.SaveChanges();
-                    LoadEmployees();  // Reload employee list after deletion
+                    var result = MessageBox.Show($"Are you sure you want to delete {selectedEmployee.Name}?",
+                                                 "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        _dbContext.Employees.Remove(selectedEmployee);
+                        _dbContext.SaveChanges();
+                        LoadEmployees();
+                    }
                 }
             }
-            else
+        }
+
+        private void ViewEmployeeButton_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var employeeId = button?.CommandParameter as int?;
+
+            if (employeeId.HasValue)
             {
-                MessageBox.Show("Please select an employee to delete.");
+                var selectedEmployee = _dbContext.Employees.FirstOrDefault(emp => emp.Id == employeeId.Value);
+                if (selectedEmployee != null)
+                {
+                    var viewEmployeeWindow = new ViewEmployeeWindow(selectedEmployee);
+                    viewEmployeeWindow.ShowDialog();
+                }
             }
+        }
+
+        private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var searchText = searchTextBox.Text.ToLower();
+            var filteredEmployees = _dbContext.Employees
+                .Where(emp => emp.Name.ToLower().Contains(searchText) ||
+                              emp.Email.ToLower().Contains(searchText) ||
+                              emp.Role.ToLower().Contains(searchText))
+                .ToList();
+            EmployeeDataGrid.ItemsSource = filteredEmployees;
+        }
+
+        private void EmployeeDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Handle DataGrid selection changes if needed
+        }
+    }
+
+    // Add the missing ViewEmployeeWindow class
+    public class ViewEmployeeWindow : Window
+    {
+        public ViewEmployeeWindow(Employee employee)
+        {
+            Title = "View Employee";
+            Width = 400;
+            Height = 300;
+            Content = new StackPanel
+            {
+                Children =
+                {
+                    new TextBlock { Text = $"Name: {employee.Name}", Margin = new Thickness(10) },
+                    new TextBlock { Text = $"Email: {employee.Email}", Margin = new Thickness(10) },
+                    new TextBlock { Text = $"Role: {employee.Role}", Margin = new Thickness(10) }
+                }
+            };
         }
     }
 }
