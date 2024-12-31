@@ -19,7 +19,7 @@ namespace Hotel_Management.Views
         private void LoadRoomDetails()
         {
             RoomNumberTextBlock.Text = _room.NumR.ToString();
-            PriceTextBlock.Text = _room.Nprice.ToString("C");
+            PriceTextBlock.Text = _room.Nprice.ToString() + "Dh";
             TypeTextBlock.Text = _room.TypeR.ToString();
             StatusTextBlock.Text = _room.Status.ToString();
 
@@ -29,7 +29,7 @@ namespace Hotel_Management.Views
             }
             else
             {
-                RoomImage.Source = null; // Or set a default placeholder image
+                RoomImage.Source = null; 
             }
         }
 
