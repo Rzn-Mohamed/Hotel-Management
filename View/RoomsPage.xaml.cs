@@ -109,14 +109,6 @@ namespace Hotel_Management.Views
             }
         }
 
-
-        private void RoomsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (RoomsListView.SelectedItem is Rooms selectedRoom)
-            {
-            }
-        }
-
         private void SeeMoreButton_Click(object sender, RoutedEventArgs e)
         {
             if (RoomsListView.SelectedItem is Rooms selectedRoom)
@@ -127,6 +119,13 @@ namespace Hotel_Management.Views
             else
             {
                 MessageBox.Show("Please select a room to view details.");
+            }
+        }
+
+        private void RoomsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (RoomsListView.SelectedItem is Rooms selectedRoom)
+            {
             }
         }
 

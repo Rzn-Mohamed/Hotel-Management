@@ -2,47 +2,142 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="Rooms Management">
-    <Grid Background="#F4F6F6">
+    <Page.Resources>
+        <!-- Main Action Button Style -->
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="160"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="5" Padding="15,0">
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="1" BlurRadius="5" Opacity="0.2"/>
+                            </Border.Effect>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{TemplateBinding Content}" 
+                                         Grid.Column="1"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Table Action Button Style -->
+        <Style x:Key="TableActionButton" TargetType="Button">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="90"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="4"
+                                x:Name="btnBorder">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="1" BlurRadius="5" Opacity="0.2"/>
+                            </Border.Effect>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="btnBorder" Property="Opacity" Value="0.8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- DataGrid Styles -->
+        <Style TargetType="DataGrid">
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#EEEEEE"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#F0F0F0"/>
+            <Setter Property="VerticalGridLinesBrush" Value="#F0F0F0"/>
+            <Setter Property="RowHeight" Value="50"/>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="BorderBrush" Value="#EEEEEE"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid Background="#F5F6FA">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Header Section with the "Add Room" Button -->
-        <StackPanel Orientation="Horizontal" Margin="20" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-            <TextBlock Text="Rooms Management" FontSize="24" FontWeight="Bold" Foreground="#34495E" VerticalAlignment="Center" Margin="0,0,20,0"/>
-            <Button Content="Add Room" Width="120" Height="40" 
-                    HorizontalAlignment="Right" 
-                    Click="AddRoomButton_Click" 
-                    Background="#2ECC71" Foreground="White" FontSize="14" 
-                    VerticalAlignment="Center" Margin="0,0,0,0" />
-        </StackPanel>
+        <!-- Header -->
+        <Border Background="White" Grid.Row="0" Padding="20" Margin="0,0,0,20">
+            <TextBlock Text="Rooms Management" FontSize="26" FontWeight="SemiBold" 
+                      Foreground="#2C3E50"/>
+        </Border>
 
-        <!-- Room List Section -->
-        <ListView x:Name="RoomsListView" SelectionChanged="RoomsListView_SelectionChanged" Grid.Row="1" Margin="20,0,20,20" Background="White" BorderBrush="#BDC3C7" BorderThickness="1" 
-                  FontSize="14" HorizontalAlignment="Stretch">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Room Number" DisplayMemberBinding="{Binding NumR}" Width="120" />
-                    <GridViewColumn Header="Price" DisplayMemberBinding="{Binding Nprice}" Width="120" />
-                    <GridViewColumn Header="Type" DisplayMemberBinding="{Binding TypeR}" Width="120" />
-                    <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Status}" Width="120" />
-                    <GridViewColumn Header="Actions" Width="250">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <!-- See More Button -->
-                                    <Button Content="..." Width="40" Height="30" Click="SeeMoreButton_Click" Margin="5"/>
-                                    <!-- Edit Button -->
-                                    <Button Content="Edit" Width="60" Height="30" Click="EditRoomButton_Click" Margin="5"/>
-                                    <!-- Delete Button -->
-                                    <Button Content="Delete" Width="60" Height="30" Click="DeleteRoomButton_Click" Margin="5"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <!-- Main Content -->
+        <Grid Grid.Row="1" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Buttons -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
+                <Button Content="Add Room" Style="{StaticResource ActionButton}"
+                        Background="#27AE60" Click="AddRoomButton_Click"/>
+            </StackPanel>
+
+            <!-- DataGrid -->
+            <Border Grid.Row="2" Background="White" CornerRadius="8" BorderBrush="#EEEEEE" BorderThickness="1">
+                <DataGrid x:Name="RoomsListView" AutoGenerateColumns="False"
+                         RowBackground="White" AlternatingRowBackground="#FAFAFA"
+                         IsReadOnly="True" CanUserAddRows="False" SelectionChanged="RoomsListView_SelectionChanged">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Room Number" Binding="{Binding NumR}" Width="120"/>
+                        <DataGridTextColumn Header="Price" Binding="{Binding Nprice}" Width="120"/>
+                        <DataGridTextColumn Header="Type" Binding="{Binding TypeR}" Width="120"/>
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="120"/>
+                        <DataGridTemplateColumn Header="Actions" Width="300">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <!-- See More Button -->
+                                        <Button Content="Details" Style="{StaticResource TableActionButton}"
+                                                Background="#3498DB" Click="SeeMoreButton_Click"/>
+                                        <!-- Edit Button -->
+                                        <Button Content="Edit" Style="{StaticResource TableActionButton}"
+                                                Background="#2980B9" Click="EditRoomButton_Click"/>
+                                        <!-- Delete Button -->
+                                        <Button Content="Delete" Style="{StaticResource TableActionButton}"
+                                                Background="#E74C3C" Click="DeleteRoomButton_Click"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+        </Grid>
     </Grid>
 </Page>
