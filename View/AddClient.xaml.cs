@@ -20,41 +20,9 @@ namespace HotelManagement.Views
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            // Validate inputs
-            if (string.IsNullOrWhiteSpace(NameTextBox.Text) ||
-                string.IsNullOrWhiteSpace(EmailTextBox.Text) ||
-                string.IsNullOrWhiteSpace(PasswordBox.Password))
-            {
-                var errorMessage = new CustomMessageBox("All fields are required!");
-                errorMessage.ShowDialog();
+            if (!ValidateInputs())
                 return;
-            }
 
-            // Validate email format
-            if (!IsValidEmail(EmailTextBox.Text.Trim()))
-            {
-                var errorMessage = new CustomMessageBox("Please enter a valid email address.");
-                errorMessage.ShowDialog();
-                return;
-            }
-
-            // Check for duplicate email
-            if (_clientService.ClientExists(EmailTextBox.Text.Trim()))
-            {
-                var errorMessage = new CustomMessageBox("A client with this email already exists.");
-                errorMessage.ShowDialog();
-                return;
-            }
-
-            // Validate password strength (minimum 8 characters, includes letters and numbers)
-            if (!IsValidPassword(PasswordBox.Password))
-            {
-                var errorMessage = new CustomMessageBox("Password must be at least 8 characters long and contain letters and numbers.");
-                errorMessage.ShowDialog();
-                return;
-            }
-
-            // Create new client object
             var client = new Client
             {
                 Name = NameTextBox.Text.Trim(),
@@ -64,14 +32,11 @@ namespace HotelManagement.Views
                 isClient = true
             };
 
-            // Save client to database
             _clientService.AddClient(client);
 
-            // Show success message
             var successMessage = new CustomMessageBox("Client added successfully!");
             successMessage.ShowDialog();
 
-            // Navigate back to the Clients page
             NavigationService.Navigate(new ClientsPage());
         }
 
@@ -80,17 +45,51 @@ namespace HotelManagement.Views
             NavigationService.Navigate(new ClientsPage());
         }
 
-        // Helper method to validate email format
+        private bool ValidateInputs()
+        {
+            if (string.IsNullOrWhiteSpace(NameTextBox.Text) ||
+                string.IsNullOrWhiteSpace(EmailTextBox.Text) ||
+                string.IsNullOrWhiteSpace(PasswordBox.Password))
+            {
+                ShowErrorMessage("All fields are required!");
+                return false;
+            }
+
+            if (!IsValidEmail(EmailTextBox.Text.Trim()))
+            {
+                ShowErrorMessage("Please enter a valid email address.");
+                return false;
+            }
+
+            if (_clientService.ClientExists(EmailTextBox.Text.Trim()))
+            {
+                ShowErrorMessage("A client with this email already exists.");
+                return false;
+            }
+
+            if (!IsValidPassword(PasswordBox.Password))
+            {
+                ShowErrorMessage("Password must be at least 8 characters long and contain letters and numbers.");
+                return false;
+            }
+
+            return true;
+        }
+
+        private void ShowErrorMessage(string message)
+        {
+            var errorMessage = new CustomMessageBox(message);
+            errorMessage.ShowDialog();
+        }
+
         private bool IsValidEmail(string email)
         {
             var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
             return emailRegex.IsMatch(email);
         }
 
-        // Helper method to validate password strength
         private bool IsValidPassword(string password)
         {
-            // Password must be at least 8 characters and contain at least one letter and one number
             var passwordRegex = new Regex(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$");
             return passwordRegex.IsMatch(password);
         }
