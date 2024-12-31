@@ -139,12 +139,14 @@
                         <DataGridTemplateColumn Header="Actions" Width="200">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" 
+                                                HorizontalAlignment="Center" 
+                                                VerticalAlignment="Center">
                                         <Button Style="{StaticResource TableActionButton}"
                                                 Background="#3498DB"
                                                 Height="28"
                                                 Width="32"
-                                                Margin="0,5,5,0"
+                                                Margin="0,0,5,0"
                                                 ToolTip="View Client"
                                                 Click="ViewClientButton_Click"
                                                 CommandParameter="{Binding Id}">
@@ -163,7 +165,7 @@
                                                 Background="#F39C12"
                                                 Height="28"
                                                 Width="32"
-                                                Margin="0,5,5,0"
+                                                Margin="0,0,5,0"
                                                 ToolTip="Edit Client"
                                                 Click="EditClientButton_Click"
                                                 CommandParameter="{Binding Id}">
