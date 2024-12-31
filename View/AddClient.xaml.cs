@@ -69,7 +69,7 @@ namespace HotelManagement.Views
 
             if (!IsValidPassword(PasswordBox.Password))
             {
-                ShowErrorMessage("Password must be at least 8 characters long and contain letters and numbers.");
+                ShowErrorMessage("Password must be at least 8 characters long.");
                 return false;
             }
 
@@ -90,8 +90,7 @@ namespace HotelManagement.Views
 
         private bool IsValidPassword(string password)
         {
-            var passwordRegex = new Regex(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$");
-            return passwordRegex.IsMatch(password);
+            return password.Length >= 8;
         }
     }
 }
