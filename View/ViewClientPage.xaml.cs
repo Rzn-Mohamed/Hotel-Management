@@ -1,6 +1,6 @@
-
 using Hotel_Management.Models;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 
 namespace HotelManagement.Views
 {
@@ -10,6 +10,14 @@ namespace HotelManagement.Views
         {
             InitializeComponent();
             DataContext = client;
+        }
+
+        private void BackButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (NavigationService?.CanGoBack == true)
+            {
+                NavigationService.GoBack();
+            }
         }
     }
 }
