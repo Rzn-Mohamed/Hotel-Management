@@ -136,28 +136,68 @@
                         <DataGridTextColumn Header="Gender" Binding="{Binding Gender}" Width="*"/>
                         <DataGridTextColumn Header="Address" Binding="{Binding Address}" Width="*"/>
                         <DataGridTextColumn Header="BirthDate" Binding="{Binding BirthDate, StringFormat=MM/dd/yyyy}" Width="*"/>
-                        <DataGridTemplateColumn Header="Actions" Width="80">
+                        <DataGridTemplateColumn Header="Actions" Width="200">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Style="{StaticResource TableActionButton}"
-                                            Background="#E74C3C"
-                                            Height="28"
-                                            Width="32"
-                                            Margin="0"
-                                            ToolTip="Delete Client"
-                                            Click="DeleteClientButton_Click"
-                                            CommandParameter="{Binding Id}">
-                                        <Button.Resources>
-                                            <Style TargetType="Border">
-                                                <Setter Property="CornerRadius" Value="4"/>
-                                            </Style>
-                                        </Button.Resources>
-                                        <Path Data="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
-                                              Fill="White"
-                                              Width="14"
-                                              Height="14"
-                                              Stretch="Uniform"/>
-                                    </Button>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Button Style="{StaticResource TableActionButton}"
+                                                Background="#3498DB"
+                                                Height="28"
+                                                Width="32"
+                                                Margin="0,5,5,0"
+                                                ToolTip="View Client"
+                                                Click="ViewClientButton_Click"
+                                                CommandParameter="{Binding Id}">
+                                            <Button.Resources>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="CornerRadius" Value="4"/>
+                                                </Style>
+                                            </Button.Resources>
+                                            <Path Data="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6Z"
+                                                  Fill="White"
+                                                  Width="14"
+                                                  Height="14"
+                                                  Stretch="Uniform"/>
+                                        </Button>
+                                        <Button Style="{StaticResource TableActionButton}"
+                                                Background="#F39C12"
+                                                Height="28"
+                                                Width="32"
+                                                Margin="0,5,5,0"
+                                                ToolTip="Edit Client"
+                                                Click="EditClientButton_Click"
+                                                CommandParameter="{Binding Id}">
+                                            <Button.Resources>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="CornerRadius" Value="4"/>
+                                                </Style>
+                                            </Button.Resources>
+                                            <Path Data="M3,17.25V21H6.75L17.81,9.94L14.06,6.19L3,17.25M20.71,7.04C21.1,6.65 21.1,6 20.71,5.61L18.39,3.29C18,2.9 17.35,2.9 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04Z"
+                                                  Fill="White"
+                                                  Width="14"
+                                                  Height="14"
+                                                  Stretch="Uniform"/>
+                                        </Button>
+                                        <Button Style="{StaticResource TableActionButton}"
+                                                Background="#E74C3C"
+                                                Height="28"
+                                                Width="32"
+                                                Margin="0"
+                                                ToolTip="Delete Client"
+                                                Click="DeleteClientButton_Click"
+                                                CommandParameter="{Binding Id}">
+                                            <Button.Resources>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="CornerRadius" Value="4"/>
+                                                </Style>
+                                            </Button.Resources>
+                                            <Path Data="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
+                                                  Fill="White"
+                                                  Width="14"
+                                                  Height="14"
+                                                  Stretch="Uniform"/>
+                                        </Button>
+                                    </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>

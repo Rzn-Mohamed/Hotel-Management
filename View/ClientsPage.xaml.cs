@@ -219,6 +219,36 @@ namespace HotelManagement.Views
             }
         }
 
+        private void ViewClientButton_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var clientId = button?.CommandParameter as int?;
+
+            if (clientId.HasValue)
+            {
+                var client = _clients.FirstOrDefault(c => c.Id == clientId.Value);
+                if (client != null)
+                {
+                    NavigationService.Navigate(new ViewClientPage(client));
+                }
+            }
+        }
+
+        private void EditClientButton_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var clientId = button?.CommandParameter as int?;
+
+            if (clientId.HasValue)
+            {
+                var client = _clients.FirstOrDefault(c => c.Id == clientId.Value);
+                if (client != null)
+                {
+                    NavigationService.Navigate(new EditClientPage(client));
+                }
+            }
+        }
+
         private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(searchTextBox.Text))
