@@ -122,7 +122,7 @@
 
             <!-- DataGrid -->
             <Border Grid.Row="2" Background="White" CornerRadius="8" BorderBrush="#EEEEEE" BorderThickness="1">
-                <DataGrid x:Name="EmployeeDataGrid" AutoGenerateColumns="False"
+                <DataGrid x:Name="EmployeeDataGrid" AutoGenerateColumns="False" ItemsSource="{Binding}"
                          RowBackground="White" AlternatingRowBackground="#FAFAFA"
                          IsReadOnly="True" CanUserAddRows="False" SelectionChanged="EmployeeDataGrid_SelectionChanged">
                     <DataGrid.Columns>
@@ -136,7 +136,7 @@
                                     <StackPanel Orientation="Horizontal" 
                                                 HorizontalAlignment="Center" 
                                                 VerticalAlignment="Center">
-                                        <Button Style="{StaticResource TableActionButton}"
+                                        <!-- <Button Style="{StaticResource TableActionButton}"
                                                 Background="#3498DB"
                                                 Height="28"
                                                 Width="32"
@@ -154,7 +154,7 @@
                                                   Width="14"
                                                   Height="14"
                                                   Stretch="Uniform"/>
-                                        </Button>
+                                        </Button> -->
                                         <Button Style="{StaticResource TableActionButton}"
                                                 Background="#F39C12"
                                                 Height="28"

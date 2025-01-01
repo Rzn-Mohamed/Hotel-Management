@@ -40,7 +40,7 @@ namespace Hotel_Management.View
                 var selectedEmployee = _dbContext.Employees.FirstOrDefault(emp => emp.Id == employeeId.Value);
                 if (selectedEmployee != null)
                 {
-                    var editEmployeeWindow = new EditEmployeeWindow(selectedEmployee);
+                    var editEmployeeWindow = new EditEmployeeWindow(selectedEmployee, _dbContext);
                     if (editEmployeeWindow.ShowDialog() == true)
                     {
                         LoadEmployees();
