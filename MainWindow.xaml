@@ -68,11 +68,10 @@
                             Click="NavigateToPage" Style="{StaticResource SidebarButtonStyle}"/>
                     <Button Content="👥  Clients" Tag="ClientsPage" 
                             Click="NavigateToPage" Style="{StaticResource SidebarButtonStyle}"/>
-                    <Button Content="👤  Employee" Tag="EmployeePage" 
+                    <Button x:Name="NavigateEmployee" Content="👤  Employee" Tag="EmployeePage" 
                             Click="NavigateToPage" Style="{StaticResource SidebarButtonStyle}"/>
-
                     <Button Content="👤  Reservation" Tag="Reservation" 
-        Click="NavigateToPage" Style="{StaticResource SidebarButtonStyle}"/>
+                            Click="NavigateToPage" Style="{StaticResource SidebarButtonStyle}"/>
                 </StackPanel>
             </DockPanel>
         </Border>

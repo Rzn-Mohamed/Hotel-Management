@@ -19,27 +19,14 @@ namespace HotelManagement.Views
 
         private void ApplyRoleRestrictions()
         {
-            if (_userRole == "Employee")
+            var navigateEmployeeButton = (Button)FindName("NavigateEmployee");
+
+            if (_userRole != "Manager")
             {
-                var navigateClientsButton = (Button)FindName("NavigateClients");
-                var navigateRoomsButton = (Button)FindName("NavigateRooms");
-                var navigateEmployeeButton = (Button)FindName("NavigateEmployee");
-
-                if (navigateClientsButton != null)
-                {
-                    navigateClientsButton.Visibility = Visibility.Collapsed;
-                }
-
-                if (navigateRoomsButton != null)
-                {
-                    navigateRoomsButton.Visibility = Visibility.Collapsed;
-                }
-
                 if (navigateEmployeeButton != null)
                 {
                     navigateEmployeeButton.Visibility = Visibility.Collapsed;
                 }
-
             }
         }
 
