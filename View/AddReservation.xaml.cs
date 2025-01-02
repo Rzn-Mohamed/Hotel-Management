@@ -1,45 +1,58 @@
 ﻿using Hotel_Management.Models;
 using Hotel_Management.Services;
 using Hotel_Management.View;
-using Microsoft.Office.Interop.Excel;
-using System.Net.Mail;
+using System;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Text.RegularExpressions;
-using System.Linq;
 
 namespace HotelManagement.Views
 {
     /// <summary>
     /// Interaction logic for AddReservation.xaml
     /// </summary>
-    public partial class AddReservation : System.Windows.Controls.Page
+    public partial class AddReservation : Page
     {
-
         public AddReservation()
         {
             InitializeComponent();
+            CheckInDatePicker.SelectedDateChanged += OnDateChanged;
+            CheckOutDatePicker.SelectedDateChanged += OnDateChanged;
+        }
+
+        private void OnDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CheckInDatePicker.SelectedDate.HasValue && CheckOutDatePicker.SelectedDate.HasValue)
+            {
+                LoadAvailableRooms(CheckInDatePicker.SelectedDate.Value, CheckOutDatePicker.SelectedDate.Value);
+            }
+        }
+
+        private void LoadAvailableRooms(DateTime checkInDate, DateTime checkOutDate)
+        {
             try
             {
                 using (var dbContext = new AppDbContext())
                 {
-                    // Fetch available rooms
-                    var availableRooms = dbContext.Rooms.ToList();  // Assuming Room is your model
+                    var availableRooms = dbContext.Rooms.Where(room =>
+                        !dbContext.Reservation.Any(reservation =>
+                            reservation.RoomId == room.Id &&
+                            checkInDate < reservation.dateFin &&
+                            checkOutDate > reservation.dateDebut)).ToList();
 
-                    // Set the ComboBox's ItemSource to the available rooms
                     RoomComboBox.ItemsSource = availableRooms;
                 }
             }
             catch (Exception ex)
             {
-                var errorMessage = new CustomMessageBox($"Error fetching rooms: {ex.Message}");
+                var errorMessage = new CustomMessageBox($"Error fetching available rooms: {ex.Message}");
                 errorMessage.ShowDialog();
             }
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            // Validate inputs
             if (string.IsNullOrWhiteSpace(GuestNameTextBox.Text) ||
                string.IsNullOrWhiteSpace(GuestEmailTextBox.Text) ||
                string.IsNullOrWhiteSpace(GuestadresseTextBox.Text) ||
@@ -52,8 +65,6 @@ namespace HotelManagement.Views
                 return;
             }
 
-
-            // Validate email format
             if (!IsValidEmail(GuestEmailTextBox.Text))
             {
                 var errorMessage = new CustomMessageBox("Invalid email format!");
@@ -61,7 +72,6 @@ namespace HotelManagement.Views
                 return;
             }
 
-            // Ensure Check-out date is after Check-in date
             if (CheckOutDatePicker.SelectedDate <= CheckInDatePicker.SelectedDate)
             {
                 var errorMessage = new CustomMessageBox("Check-out date must be after check-in date.");
@@ -71,7 +81,6 @@ namespace HotelManagement.Views
 
             var selectedRoom = (Rooms)RoomComboBox.SelectedItem;
 
-            // Check room availability
             if (!IsRoomAvailable(selectedRoom.Id, CheckInDatePicker.SelectedDate.Value, CheckOutDatePicker.SelectedDate.Value))
             {
                 var errorMessage = new CustomMessageBox("The selected room is not available for the selected dates.");
@@ -79,12 +88,12 @@ namespace HotelManagement.Views
                 return;
             }
 
-            // Create a new reservation object
             var newReservation = new ReservationModel
             {
                 GuestName = GuestNameTextBox.Text.Trim(),
                 GuestEmail = GuestEmailTextBox.Text.Trim(),
                 Guestadresse = GuestadresseTextBox.Text.Trim(),
+                RoomId = selectedRoom.Id,
                 dateDebut = CheckInDatePicker.SelectedDate.Value,
                 dateFin = CheckOutDatePicker.SelectedDate.Value,
             };
@@ -97,54 +106,43 @@ namespace HotelManagement.Views
                     dbContext.SaveChanges();
                 }
 
-                // Send confirmation email to client
                 SendEmailToClient(newReservation);
 
                 var successMessage = new CustomMessageBox("Reservation added successfully!");
                 successMessage.ShowDialog();
 
-                // Navigate back to the reservations page
                 NavigationService.Navigate(new Reservation());
             }
             catch (Exception ex)
             {
-                var errorMessage = new CustomMessageBox($"Error saving reservation: {ex.Message}\n{ex.StackTrace}");
+                var errorMessage = new CustomMessageBox($"Error saving reservation: {ex.Message}");
                 errorMessage.ShowDialog();
-
-                if (ex.InnerException != null)
-                {
-                    var innerError = new CustomMessageBox($"Inner exception: {ex.InnerException.Message}");
-                    innerError.ShowDialog();
-                }
             }
-
         }
 
         private bool IsValidEmail(string email)
         {
-            var emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$"; // Basic email pattern
+            var emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
             return Regex.IsMatch(email, emailPattern);
         }
 
         private bool IsRoomAvailable(int roomId, DateTime checkInDate, DateTime checkOutDate)
-{
-        try
         {
-            using (var dbContext = new AppDbContext())
+            try
             {
-                // Check for overlapping reservations
-                return !dbContext.Reservation.Any(r =>
-                    r.RoomId == roomId &&  // Correctly referencing the RoomId in the Reservation
-                    checkInDate < r.dateFin && checkOutDate > r.dateDebut); // Overlap condition
+                using (var dbContext = new AppDbContext())
+                {
+                    return !dbContext.Reservation.Any(reservation =>
+                        reservation.RoomId == roomId &&
+                        checkInDate < reservation.dateFin &&
+                        checkOutDate > reservation.dateDebut);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error checking room availability.", ex);
             }
         }
-        catch (Exception ex)
-        {
-            throw new ApplicationException("An error occurred while checking room availability.", ex);
-        }
-}
-
-
 
         private void SendEmailToClient(ReservationModel reservation)
         {
@@ -175,11 +173,6 @@ namespace HotelManagement.Views
                 var errorMessage = new CustomMessageBox($"Failed to send email: {ex.Message}");
                 errorMessage.ShowDialog();
             }
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Handle Cancel button click if needed
         }
     }
 }
