@@ -15,5 +15,7 @@ namespace Hotel_Management.Models
         public String GuestName { get; set; }
         public String GuestEmail { get; set; }
         public String Guestadresse { get; set; }
+        public int RoomId { get; set; }
+
     }
 }

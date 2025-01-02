@@ -41,16 +41,17 @@ namespace HotelManagement.Views
         {
             // Validate inputs
             if (string.IsNullOrWhiteSpace(GuestNameTextBox.Text) ||
-                string.IsNullOrWhiteSpace(GuestEmailTextBox.Text) ||
-                string.IsNullOrWhiteSpace(GuestadresseTextBox.Text) ||
-                !CheckInDatePicker.SelectedDate.HasValue ||
-                !CheckOutDatePicker.SelectedDate.HasValue ||
-                RoomComboBox.SelectedItem == null) // Ensure a room is selected
+               string.IsNullOrWhiteSpace(GuestEmailTextBox.Text) ||
+               string.IsNullOrWhiteSpace(GuestadresseTextBox.Text) ||
+               !CheckInDatePicker.SelectedDate.HasValue ||
+               !CheckOutDatePicker.SelectedDate.HasValue ||
+               RoomComboBox.SelectedItem == null)
             {
                 var errorMessage = new CustomMessageBox("All fields are required!");
                 errorMessage.ShowDialog();
                 return;
             }
+
 
             // Validate email format
             if (!IsValidEmail(GuestEmailTextBox.Text))
@@ -68,8 +69,10 @@ namespace HotelManagement.Views
                 return;
             }
 
-            // Check if the selected room is available for the selected dates
-            if (!IsRoomAvailable((int)RoomComboBox.SelectedValue, CheckInDatePicker.SelectedDate.Value, CheckOutDatePicker.SelectedDate.Value))
+            var selectedRoom = (Rooms)RoomComboBox.SelectedItem;
+
+            // Check room availability
+            if (!IsRoomAvailable(selectedRoom.Id, CheckInDatePicker.SelectedDate.Value, CheckOutDatePicker.SelectedDate.Value))
             {
                 var errorMessage = new CustomMessageBox("The selected room is not available for the selected dates.");
                 errorMessage.ShowDialog();
@@ -82,9 +85,8 @@ namespace HotelManagement.Views
                 GuestName = GuestNameTextBox.Text.Trim(),
                 GuestEmail = GuestEmailTextBox.Text.Trim(),
                 Guestadresse = GuestadresseTextBox.Text.Trim(),
-                dateDebut = (DateTime)CheckInDatePicker.SelectedDate,
-                dateFin = (DateTime)CheckOutDatePicker.SelectedDate,
-                Id = (int)RoomComboBox.SelectedValue, // Assume RoomComboBox holds room ids
+                dateDebut = CheckInDatePicker.SelectedDate.Value,
+                dateFin = CheckOutDatePicker.SelectedDate.Value,
             };
 
             try
@@ -125,18 +127,24 @@ namespace HotelManagement.Views
         }
 
         private bool IsRoomAvailable(int roomId, DateTime checkInDate, DateTime checkOutDate)
+{
+        try
         {
             using (var dbContext = new AppDbContext())
             {
-                // Check if the room is reserved within the selected date range
-                var overlappingReservation = dbContext.Reservation
-                    .Where(r => r.Id == roomId &&
-                                ((r.dateDebut < checkOutDate && r.dateFin > checkInDate)))
-                    .FirstOrDefault();
-
-                return overlappingReservation == null; // Room is available if no overlapping reservation exists
+                // Check for overlapping reservations
+                return !dbContext.Reservation.Any(r =>
+                    r.RoomId == roomId &&  // Correctly referencing the RoomId in the Reservation
+                    checkInDate < r.dateFin && checkOutDate > r.dateDebut); // Overlap condition
             }
         }
+        catch (Exception ex)
+        {
+            throw new ApplicationException("An error occurred while checking room availability.", ex);
+        }
+}
+
+
 
         private void SendEmailToClient(ReservationModel reservation)
         {
